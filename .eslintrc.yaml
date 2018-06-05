@@ -1,0 +1,19 @@
+---
+
+  env:
+    browser: false
+    node: true
+    es6: true
+
+  parserOptions:
+    ecmaVersion: 2018
+    sourceType: 'module'
+
+  extends:
+    - "eslint:recommended"
+    - prettier
+
+  overrides:
+    - files:
+        - "test/*.js"
+
