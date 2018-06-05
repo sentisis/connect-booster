@@ -2,7 +2,7 @@
 
 This service receives your messages from [Sentisis Connect](http://learning.sentisis.io/sentisis-connect/introduccion-a-sentisis-connect) and boost the Tweets before forwarding them to your webhook.
 
-## Ratianale
+## Rationale
 
 In order to abide by [Twitter's usage terms](https://developer.twitter.com/en/developer-terms/agreement-and-policy.html), Séntisis is not allowed to share Twitter data with third parties. By using this service with your own credentials you will be able to get all that Séntisis offers (sentiment analysis, categorization...) while seamlessly keeping data from Twitter.  
 
