@@ -2,10 +2,13 @@
 const axios = require('axios')
 const axiosRetry = require('axios-retry')
 const { compact } = require('lodash')
+const promiseRetry = require('bluebird-retry')
 const { get, groupBy } = require('lodash/fp')
 
 global.Promise = require('bluebird')
 axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay })
+const retry = fun =>
+  promiseRetry(fun, { max_tries: 4, interval: 500, backoff: 2 })
 
 const TW_BUFFER_SIZE = process.env.TW_BUFFER_SIZE || 10
 const TW_BUFFER_INTERVAL = process.env.TW_BUFFER_INTERVAL || 10000 // 10 seconds
@@ -24,7 +27,7 @@ class MessageManager {
 
   async handle(message) {
     const { type } = message
-    if (type === 'Tweet' || type === 'ReTweet') {
+    if (type === 'Tweet' || type === 'Retweet') {
       this.tweetsBuffer.push(message)
       if (this.tweetsBuffer.length >= TW_BUFFER_SIZE)
         return this.bulkProcessTweets()
@@ -41,10 +44,12 @@ class MessageManager {
     let enriched = messages
     try {
       const ids = messages.map(m => m.msgId)
-      const { data } = await this.twitterClient.get('statuses/lookup', {
-        id: ids.join(),
-        include_entities: false,
-      })
+      const { data } = await retry(() =>
+        this.twitterClient.get('statuses/lookup', {
+          id: ids.join(),
+          include_entities: false,
+        }),
+      )
       if (!data) throw new Error('Error while accessing Twitter API')
 
       // id_str instead of id: https://developer.twitter.com/en/docs/basics/twitter-ids.html
@@ -57,7 +62,7 @@ class MessageManager {
     } catch (e) {
       console.log(e.stack)
       if (DISCARD_NOT_ENRICHED) {
-        console.log('Error: Discarding messages')
+        console.log('Discarding messages since we could not enrich them')
         this.tweetsBufferLocked = false
         return
       }
