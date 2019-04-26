@@ -119,7 +119,7 @@ You can either check the logs or hit `/healthcheck` from outside your network.
 | `TW_ACCESS_TOKEN_SECRET` | yes      | -       | Your Twitter account's access token secret                                                                          |
 | `TW_BUFFER_SIZE`         | no       | 10      | Maximum amount of tweets to ask the Twitter's API for at once                                                       |
 | `TW_BUFFER_INTERVAL`     | no       | 10000   | Interval to flush (process) all accumulated tweets. In miliseconds                                                  |
-| `DISCARD_NOT_ENRICHED`   | no       | false   | Weather to discard or forward failed messages (tweets that were not enriched due to i.e. an error on Twitter's API) |
+| `DISCARD_NOT_ENRICHED`   | no       | false   | Whether to discard or forward failed messages (tweets that were not enriched due to i.e. an error on Twitter's API) |
 | `PORT`                   | no       | 8080    | HTTP port for the service to listen to                                                                              |
 
 ## Versions
