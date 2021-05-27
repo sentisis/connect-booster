@@ -8,7 +8,7 @@
     "test": "ava"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "axios-retry": "^3.1.0",
     "bluebird": "^3.5.1",
     "bluebird-retry": "^0.11.0",
